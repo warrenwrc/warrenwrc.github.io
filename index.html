@@ -1030,9 +1030,14 @@
     let thumbHtml = '';
     if (work.type === 'tvc' || work.type === 'documentary') {
       const bg = gradients[work.gradientClass] || 'linear-gradient(135deg, #111 0%, #1a1a1a 100%)';
+      const ytId = work.videoUrl ? work.videoUrl.replace('https://youtu.be/','').split('?')[0] : '';
+      const thumbSrc = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : '';
       thumbHtml = `
         <div class="card-thumb">
-          <div class="card-thumb-placeholder" style="background:${bg}">
+          ${thumbSrc
+            ? `<img src="${thumbSrc}" alt="${work.brand}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+            : ''}
+          <div class="card-thumb-placeholder" style="background:${bg};${thumbSrc ? 'display:none' : ''}">
             <span class="brand-initial">${work.brand.charAt(0)}</span>
           </div>
           <div class="card-overlay">
